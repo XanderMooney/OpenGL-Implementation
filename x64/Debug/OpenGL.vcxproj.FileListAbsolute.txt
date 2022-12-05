@@ -1,1 +1,2 @@
 D:\Coding Projects\OpenGL\x64\Debug\OpenGL.exe
+D:\Coding Projects\OpenGL-Implementation\x64\Debug\OpenGL.exe
