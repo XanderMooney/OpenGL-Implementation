@@ -1,7 +1,9 @@
 #include<iostream>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
+#include<stb/stb_image.h>
 
+#include"Texture.h"
 #include"shaderClass.h"
 #include"EBO.h"
 #include"VAO.h"
@@ -34,20 +36,17 @@ int main()
 
 	// Vertices coordinates
 	GLfloat vertices[] =
-	{ //                COORDINATES                   /     COLORS           //
-		-0.5f, -0.5f * float(sqrt(3)) / 3,      0.0f,   0.8f, 0.3f,  0.02f,  // lower left corner
-		0.5f, -0.5f * float(sqrt(3)) / 3,       0.0f,   0.8f, 0.3f,  0.02f,  // lower right corner
-		0.0f, 0.5f * float(sqrt(3)) * 2 / 3,    0.0f,   1.0f, 0.6f,  0.32f,  // Upper corner
-		- 0.5f / 2, 0.5f * float(sqrt(3)) / 6,  0.0f,   0.9f, 0.45f, 0.17f,  // Inner left
-		0.5f / 2, 0.5f * float(sqrt(3)) / 6,    0.0f,   0.9f, 0.45f, 0.17f,  // Inner right
-		0.0f, -0.5f * float(sqrt(3)) / 3,       0.0f,   0.8f, 0.3f,  0.02f   // Inner down
+	{ //     COORDINATES     /     COLORS            / TEXCOORDS   
+		-0.5f, -0.5f, 0.0f,     1.0f,  0.0f,  0.0f,    0.0f, 0.0f,  // lower left corner
+		-0.5f,  0.5f, 0.0f,     0.0f,  1.0f,  0.0f,    0.0f, 1.0f,  // lower right corner
+		 0.5f,  0.5f, 0.0f,     0.0f,  0.0f,  1.0f,    1.0f, 1.0f,  // Upper corner
+		 0.5f, -0.5f, 0.0f,     1.0f,  1.0f,  1.0f,    1.0f, 0.0f   // Inner left
 	};
 
 	GLuint indices[] =
 	{
-		0, 3, 5, // Lower left triangle
-		3, 2, 4, // Lower right triangle
-		5, 4, 1 // Upper triangle
+		0, 2, 1, // Upper triangle
+		0, 3, 2  // Lower triangle
 	};
 
 	// Creates Shader object using shaders default.vert and default.frag
@@ -62,8 +61,9 @@ int main()
 	EBO EBO1(indices, sizeof(indices));
 
 	// Links VBO attributes such as coordinates and colors to VAO
-	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
-	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
+	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	VAO1.LinkAttrib(VBO1, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	// unbind all to prevent accidental modification
 	VAO1.Unbind();
 	VBO1.Unbind();
@@ -72,12 +72,10 @@ int main()
 	// Gets ID of uniform called "scale"
 	GLuint uniID = glGetUniformLocation(shaderProgram.ID, "scale");
 
-	// Set the background color to a nice blue
-	glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-	// Clean the back buffer and assign the new color
-	glClear(GL_COLOR_BUFFER_BIT);
-	// Swap the back buffer with the front buffer
-	glfwSwapBuffers(window);
+	// Texture
+
+	Texture dun("dun.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+	dun.texUnit(shaderProgram, "tex0", 0);
 
 	// Main while loop
 	while(!glfwWindowShouldClose(window)) 
@@ -88,10 +86,12 @@ int main()
 		shaderProgram.Activate();
 		// Assigns a value to the uniform; always done after shader activation
 		glUniform1f(uniID, 0.5f);
+		// Bind texture so it renders
+		dun.Bind();
 		// Bind the VAO so OpenGL knows we are using it
 		VAO1.Bind();
 		// Draw the triangle
-		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
 		// let GLFW do what it needs to, all managed by itself
 		glfwPollEvents();
@@ -101,6 +101,7 @@ int main()
 	VAO1.Delete();
 	VBO1.Delete();
 	EBO1.Delete();
+	dun.Delete();
 	shaderProgram.Delete();
 
 	// Delete the window before ending the program

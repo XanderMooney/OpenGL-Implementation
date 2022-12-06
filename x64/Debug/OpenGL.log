@@ -1,7 +1,6 @@
 ﻿  Main.cpp
-  VAO.cpp
-D:\Coding Projects\OpenGL-Implementation\VAO.cpp(13,63): warning C4244: 'argument': conversion from 'GLsizeiptr' to 'GLsizei', possible loss of data
-  shaderClass.cpp
+  Texture.cpp
+D:\Coding Projects\OpenGL-Implementation\Texture.cpp(10,9): warning C4101: 'texture': unreferenced local variable
   Generating Code...
 glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(context.obj)' or at 'D:\Coding Projects\OpenGL-Implementation\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(init.obj)' or at 'D:\Coding Projects\OpenGL-Implementation\x64\Debug\glfw3.pdb'; linking object as if no debug info
