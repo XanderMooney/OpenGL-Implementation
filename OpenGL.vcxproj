@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Coding Projects\OpenGL-Implementation\Libraries\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Coding Projects\OpenGL-Implementation\Libraries\include;D:\Coding Projects\OpenGL-Implementation\Libraries\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Coding Projects\OpenGL-Implementation\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,8 +82,8 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>D:\Coding Projects\OpenGL-Implementation\Libraries\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Coding Projects\OpenGL-Implementation\Libraries\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>P:\C++\OpenGL-Implementation\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>P:\C++\OpenGL-Implementation\Libraries\lib;D:\Coding Projects\OpenGL-Implementation\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Coding Projects\OpenGL-Implementation\Libraries\include;P:\C++\OpenGL-Implementation\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Coding Projects\OpenGL-Implementation\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Main.cpp" />
@@ -161,6 +162,7 @@
     <None Include="default.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="EBO.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="Texture.h" />
