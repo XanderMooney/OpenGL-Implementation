@@ -105,15 +105,12 @@ int main()
 
 	// Creates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
-	
 	// Generates Vertex Array Object with binding
 	VAO VAO1;
 	VAO1.Bind();
-
 	// Generate Vertex Buffer Object and Element Buffer Object and links them to their vertices
 	VBO VBO1(vertices, sizeof(vertices));
 	EBO EBO1(indices, sizeof(indices));
-
 	// Links VBO attributes such as coordinates and colors to VAO
 	VAO1.LinkAttrib(VBO1, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0);
 	VAO1.LinkAttrib(VBO1, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float)));
@@ -124,23 +121,22 @@ int main()
 	VBO1.Unbind();
 	EBO1.Unbind();
 
+	// Shader for light cube
 	Shader lightShader("light.vert", "light.frag");
-
+	// Generates Vertex Array Object with binding
 	VAO lightVAO;
 	lightVAO.Bind();
-
+	// Generate Vertex Buffer Object and Element Buffer Object and links them to their vertices
 	VBO lightVBO(lightVertices, sizeof(lightVertices));
 	EBO lightEBO(lightIndices, sizeof(lightIndices));
-
+	// Links VBO attributes such as coordinates and colors to VAO
 	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-
+	// Unbind all to prevent accidental modification
 	lightVAO.Unbind();
 	lightVBO.Unbind();
 	lightEBO.Unbind();
 
 	glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-
 	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
 	glm::mat4 lightModel = glm::mat4(1.0f);
 	lightModel = glm::translate(lightModel, lightPos);
@@ -191,7 +187,9 @@ int main()
 		// Draw the triangle
 		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
 
+		// Tell OpenGL which Shader Program we are using
 		lightShader.Activate();
+		// Exports the camMatrix to the Vertex Shader of the light cube
 		camera.Matrix(lightShader, "camMatrix");
 		lightVAO.Bind();
 		glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
@@ -207,6 +205,10 @@ int main()
 	EBO1.Delete();
 	dun.Delete();
 	shaderProgram.Delete();
+	lightVAO.Delete();
+	lightVBO.Delete();
+	lightEBO.Delete();
+	lightShader.Delete();
 
 	// Delete the window before ending the program
 	glfwDestroyWindow(window);

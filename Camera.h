@@ -34,8 +34,9 @@ class Camera
 		// Camera constructor to set up initial values
 		Camera(int width, int height, glm::vec3 position);
 
-		// Updates and exports the camera matrix to the Vertex shader
+		// Updates the camera matrix to the Vertex shader
 		void updateMatrix(float FOVdeg, float nearPlane, float farPlane);
+		// Exports the camera matrix to a shader
 		void Matrix(Shader& shader, const char* uniform);
 		void Inputs(GLFWwindow* window);
 };
