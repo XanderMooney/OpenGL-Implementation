@@ -179,6 +179,9 @@ int main()
 
 		// Tell OpenGL which Shader Program we are using
 		shaderProgram.Activate();
+		// Exports the camera pos to the Fragment shader for specular lighting
+		glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+		// Exports the camMatrix to the Vertex Shader of the pyramid
 		camera.Matrix(shaderProgram, "camMatrix");
 		// Bind texture so it renders
 		dun.Bind();
