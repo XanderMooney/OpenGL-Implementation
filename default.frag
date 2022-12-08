@@ -24,6 +24,8 @@ uniform vec3 camPos;
 vec4 pointLight() 
 {
 	vec3 lightVec = lightPos - crntPos;
+	
+	// intensity of the light based on distance
 	float dist = length(lightVec);
 	float a = 0.05;
 	float b = 0.01;
@@ -47,8 +49,56 @@ vec4 pointLight()
 	return (texture(tex0, texCoord) * lightColor * (diffuse * intensity + ambient) + texture(tex1, texCoord).r * specular * intensity) * lightColor;
 }
 
+vec4 direcLight()
+{
+	// ambient lighting to prevent completely dark spots
+	float ambient = 0.20f;
+	
+	// diffuse lighting
+	vec3 normal = normalize(Normal);
+	vec3 lightDirection = normalize(vec3(1.0f, 1.0f, 0.0f));
+	float diffuse = max(dot(normal, lightDirection), 0.0f);
+	
+	// specular lighting
+	float specularLight = 0.50f;
+	vec3 viewDirection = normalize(camPos - crntPos);
+	vec3 reflectionDirection = reflect(-lightDirection, normal);
+	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
+	float specular = specAmount * specularLight;
+	
+	return (texture(tex0, texCoord) * (diffuse + ambient) + texture(tex1, texCoord).r * specular) * lightColor;
+}
+
+vec4 spotLight()
+{
+	// controls how big the light cone is
+	float outerCone = 0.90f;
+	float innerCone = 0.95f;
+
+	// ambient lighting to prevent completely dark spots
+	float ambient = 0.20f;
+	
+	// diffuse lighting
+	vec3 normal = normalize(Normal);
+	vec3 lightDirection = normalize(vec3(lightPos - crntPos));
+	float diffuse = max(dot(normal, lightDirection), 0.0f);
+	
+	// specular lighting
+	float specularLight = 0.50f;
+	vec3 viewDirection = normalize(camPos - crntPos);
+	vec3 reflectionDirection = reflect(-lightDirection, normal);
+	float specAmount = pow(max(dot(viewDirection, reflectionDirection), 0.0f), 16);
+	float specular = specAmount * specularLight;
+
+	// calculates the intensity
+	float angle = dot(vec3(0.0f, -1.0f, 0.0f), -lightDirection);
+	float intensity = clamp((angle - outerCone) / (innerCone - outerCone), 0.0f, 1.0f);
+	
+	return (texture(tex0, texCoord) * (diffuse * intensity + ambient) + texture(tex1, texCoord).r * specular * intensity) * lightColor;
+}
+
 void main()
 {
 	// outputs the final color
-    FragColor = pointLight();
+    FragColor = spotLight();
 }
