@@ -240,6 +240,7 @@ std::vector<Texture> Model::getTextures()
 			}
 		}
 	}
+	return textures;
 }
 
 std::vector<Vertex> Model::assembleVertices
@@ -250,7 +251,7 @@ std::vector<Vertex> Model::assembleVertices
 )
 {
 	std::vector<Vertex> vertices;
-	for (int i = 0; i < positions.size(); ++i);
+	for (int i = 0; i < positions.size(); i++)
 	{
 		vertices.push_back
 		(
@@ -271,7 +272,7 @@ std::vector<glm::vec2> Model::groupFloatsVec2(std::vector<float> floatVec)
 	std::vector<glm::vec2> vectors;
 	for (int i = 0; i < floatVec.size(); i)
 	{
-		vectors.push_back(glm::vec2(floatVec[++i], floatVec[++i]));
+		vectors.push_back(glm::vec2(floatVec[i++], floatVec[i++]));
 	}
 	return vectors;
 }
@@ -280,7 +281,7 @@ std::vector<glm::vec3> Model::groupFloatsVec3(std::vector<float> floatVec)
 	std::vector<glm::vec3> vectors;
 	for (int i = 0; i < floatVec.size(); i)
 	{
-		vectors.push_back(glm::vec3(floatVec[++i], floatVec[++i], floatVec[++i]));
+		vectors.push_back(glm::vec3(floatVec[i++], floatVec[i++], floatVec[i++]));
 	}
 	return vectors;
 }
@@ -289,7 +290,7 @@ std::vector<glm::vec4> Model::groupFloatsVec4(std::vector<float> floatVec)
 	std::vector<glm::vec4> vectors;
 	for (int i = 0; i < floatVec.size(); i)
 	{
-		vectors.push_back(glm::vec4(floatVec[++i], floatVec[++i], floatVec[++i], floatVec[++i]));
+		vectors.push_back(glm::vec4(floatVec[i++], floatVec[i++], floatVec[i++], floatVec[i++]));
 	}
 	return vectors;
 }

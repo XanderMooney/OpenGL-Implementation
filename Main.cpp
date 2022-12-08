@@ -1,7 +1,7 @@
 #include"Model.h"
 
-const unsigned int width = 800;
-const unsigned int height = 800;
+const unsigned int width = 1080;
+const unsigned int height = 1080;
 
 
 int main()
@@ -45,6 +45,8 @@ int main()
 
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
+	Model model("models/map/scene.gtlf");
+
 	// Main while loop
 	while(!glfwWindowShouldClose(window)) 
 	{
@@ -58,6 +60,8 @@ int main()
 		camera.Inputs(window);
 		// Updates and exports the camera matrix to the Vertex shader
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
+
+		model.Draw(shaderProgram, camera);
 
 		glfwSwapBuffers(window);
 		// let GLFW do what it needs to, all managed by itself
