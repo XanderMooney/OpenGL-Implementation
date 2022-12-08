@@ -1,6 +1,6 @@
 #include"Texture.h"
 
-Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, GLenum pixelType)
+Texture::Texture(const char* image, GLenum texType, GLuint slot, GLenum format, GLenum pixelType)
 {
 	// Assigns the type of the texture to the texture object
 	type = texType;
@@ -10,12 +10,13 @@ Texture::Texture(const char* image, GLenum texType, GLenum slot, GLenum format, 
 	// Flip the image to render in the correct orientation
 	stbi_set_flip_vertically_on_load(true);
 	// turns the image file into bytes
-	unsigned char* bytes = stbi_load("dun.png", &widthImg, &heightImg, &numColCh, 0);
+	unsigned char* bytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
 
 	// Generates an OpenGL texture object
 	glGenTextures(1, &ID);
 	// Assigns texture to a texture unit
-	glActiveTexture(slot);
+	glActiveTexture(GL_TEXTURE0 + slot);
+	unit = slot;
 	glBindTexture(texType, ID);
 
 	// Configure the texture algorithm used to change the texture size
@@ -51,6 +52,7 @@ void Texture::texUnit(Shader shader, const char* uniform, GLuint unit)
 
 void Texture::Bind()
 {
+	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(type, ID);
 }
 
