@@ -16,7 +16,7 @@ void Camera::updateMatrix(float FOVdeg, float nearPlane, float farPlane)
 	// Make camera look in the right direction at the correct position
 	view = glm::lookAt(Position, Position + Orientation, Up);
 	// Adds the camera's perspective
-	projection = glm::perspective(glm::radians(FOVdeg), (float)(width / height), nearPlane, farPlane);
+	projection = glm::perspective(glm::radians(FOVdeg), (float)width / height, nearPlane, farPlane);
 
 	// Sets the new camera matrix
 	cameraMatrix = projection * view;
@@ -92,7 +92,7 @@ void Camera::Inputs(GLFWwindow* window)
 		glm::vec3 newOrientation = glm::rotate(Orientation, glm::radians(-rotX), glm::normalize(glm::cross(Orientation, Up)));
 
 		// Makes sure the change in orientation is not too extreme as to prevent events that result in camera flipping
-		if (!((glm::angle(newOrientation, Up) <= glm::radians(5.0f)) || glm::angle(newOrientation, -Up) <= glm::radians(5.0f)))
+		if (abs(glm::angle(newOrientation, Up) - glm::radians(90.0f)) <= glm::radians(85.0f))
 		{
 			Orientation = newOrientation;
 		}
