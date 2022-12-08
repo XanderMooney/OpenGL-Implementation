@@ -49,7 +49,7 @@ vec4 pointLight()
 	return (texture(tex0, texCoord) * lightColor * (diffuse * intensity + ambient) + texture(tex1, texCoord).r * specular * intensity) * lightColor;
 }
 
-vec4 direcLight()
+vec4 globalLight()
 {
 	// ambient lighting to prevent completely dark spots
 	float ambient = 0.20f;
