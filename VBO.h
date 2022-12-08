@@ -5,6 +5,7 @@
 #include<glad/glad.h>
 #include<vector>
 
+// Struct to standardize vertices in meshes
 struct Vertex
 {
 	glm::vec3 position;
