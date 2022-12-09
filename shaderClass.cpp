@@ -16,6 +16,7 @@ std::string get_file_contents(const char* filename)
 		
 		return(contents);
 	}
+	// This error is most commonly thrown if you put in the wrong filepath or file name
 	throw(errno);
 }
 
